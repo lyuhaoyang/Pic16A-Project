@@ -5,7 +5,7 @@ Group Members: Wei-Jen Lee, Haoyang Lyu, Adam Traut
 
 Description: our project uses the college basketball match data in year 2020 to learn about the performance of each team and predicts their rankings as well as the winner of the match
 
-Python package: numpy, pandas, matplotlib and random
+Python package: numpy 1.21.5, pandas 1.4.2, matplotlib 3.5.1 and random
 
 Demo File:
 
