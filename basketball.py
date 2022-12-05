@@ -54,11 +54,16 @@ def normed_error(dataframe, column_name, L, p):
 
 
 def march_madness(basketball):
-    '''Simulate entire march madness from list of basketball teams with new Index
+    '''
+    Simulates a march madness tournament. Prints out winners of each (4) region and the overall winner.
+    Extracts the team from each conference and the next top 32 teams given newIndex column. Runs a 64-team
+    tournament (with some degree of randomness).
+    Args:
+        basketball: a basketball object containing all basketball teams for a given year. 
+            Must include newIndex and conference columns.
     '''
     if not isinstance(basketball, pd.core.frame.DataFrame):
-            raise TypeError("dataframe should be an instance of Python Dataframe") 
-            
+            raise TypeError("dataframe should be an instance of Python Dataframe")
     
     # get the top newIndex from each conference
     confNewIndex = basketball.groupby('CONF')['newIndex'].max()
@@ -83,6 +88,7 @@ def march_madness(basketball):
     
     print(f'Final Four Teams: {northWinner["TEAM"]}, {southWinner["TEAM"]}, {eastWinner["TEAM"]}, {westWinner["TEAM"]}')
     
+    # creates another basketball object with the four region winners
     finalFour = basketball_team(pd.concat([northWinner, southWinner, eastWinner, westWinner], axis=1).T)
     
     marchMadnessWinner = finalFour.play_final_four()
@@ -106,9 +112,13 @@ class basketball_team(pd.DataFrame):
             
         
     def play_weighted_games(self, index1, index2):
-        ''' plays a game using index
+        ''' plays a game using the score of two teams with random chance.
+        Args:
+            index1: the row index of team 1 in the basketball object (int)
+            index2: the row index of team 2 in the basketball object (int)
+        Returns:
+            team1/team2: the basketball object (row) of the winning basketball team
         '''
-        
         team1 = self.iloc[index1]
         team2 = self.iloc[index2]
         
@@ -122,21 +132,27 @@ class basketball_team(pd.DataFrame):
         
     
     def simulate_regional_games(self):
-        ''' Simulates a single region of a march madness tournament
+        ''' Simulates a single region of a march madness tournament. Basketball object must
+        be 16 teams (the amount of teams in a single region)
+        Returns:
+            simulation.iloc[0]: a basketball object that is one row (the winner of the region)
         '''
-        
         if len(self)!=16:
             raise ValueError("Region must have 16 seeds")
         
         simulation = self
         num_of_games_per_round = [8, 4, 2, 1]
         
+        # for number of games in the round
         for curr_round_games in num_of_games_per_round:
+            # for the highest seed in the number of games this round
             for team1index in range(curr_round_games):
+                # set the seed of the opposing team
                 team2index = (curr_round_games*2-1) - team1index
-                
+                # simulate the game between two teams
                 game_winner = simulation.play_weighted_games(team1index, team2index)
-            
+                
+                # assign the winner as the higher seed and drop the losing team
                 simulation.iloc[team1index] = game_winner
                 simulation.drop(team2index, inplace=True)
                 
@@ -145,6 +161,10 @@ class basketball_team(pd.DataFrame):
     
     def play_final_four(self):
         '''
+        Simulates a final four tournament. Takes 4 teams (the winners of each region) and outputs
+        a single overall winner. Basketball object must have only 4 teams.
+        Returns:
+            A string of the name of the team that won the final four
         '''
         if len(self)!=4:
             raise ValueError("Final Four must have 4 teams")
