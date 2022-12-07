@@ -1,6 +1,7 @@
 import numpy 
 import pandas as pd
 import random
+from sklearn.linear_model import LinearRegression
 
 
 def get_column_correlation(dataframe, cols):
@@ -51,6 +52,22 @@ def normed_error(dataframe, column_name, L, p):
     
     return sum^(1/p)
 
+def linear_regression(basketball):
+    '''
+    Create and train a linear regression model to predict the "BARTHAG" attribute with the inputs "W","ADJOE", and "ADJDE". 
+    Args:
+        basketball: a dataframe containing all basketball teams for a given year. 
+    Returns:
+         lr: a trained linear regression model
+    '''
+    
+    lr = LinearRegression()
+    # structure the "basketball" data into X and y variable
+    train_X = basketball[["W","ADJOE","ADJDE"]]
+    train_y = basketball["BARTHAG"]
+    lr.fit(train_X, train_y) # train the model
+        
+    return lr
 
 
 def march_madness(basketball):
