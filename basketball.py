@@ -59,6 +59,8 @@ def linear_regression(basketball):
         basketball: a dataframe containing all basketball teams for a given year. 
     Returns:
          lr: a trained linear regression model
+         train_X: The predictor variables that used to train the model
+         train_y: The target variable that used to train the model
     '''
     
     lr = LinearRegression()
@@ -67,7 +69,7 @@ def linear_regression(basketball):
     train_y = basketball["BARTHAG"]
     lr.fit(train_X, train_y) # train the model
         
-    return lr
+    return lr, train_X, train_y
 
 
 def march_madness(basketball):
