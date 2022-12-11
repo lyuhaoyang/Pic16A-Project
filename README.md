@@ -22,6 +22,7 @@ By performing a linear regression, we can get the newly predicted team rankings.
 This model can also be veryfied in data from other years. Since they lack the ranking column, we used "BARTHAG" column to obtain model score. Our model has a score of 0.97 which is relatively good.
 
 ![1670801529726](https://user-images.githubusercontent.com/119776543/206935466-122f3b7f-4878-4297-b7ca-1e419cb0a424.png)
+
 And in the end there is this march_madness function which simulates basketball match between 64 teams and produces the final winner.
 
 Scope and Limitation: the code can similarly be applied to predict the outcome of other sport matches like football, soccer etc, with modification of parameters and class definition. However it cannot automatically generate the desired parameters and requires the user to have a relatively good understanding of the specific sports to use.
