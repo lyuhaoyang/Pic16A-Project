@@ -31,26 +31,6 @@ def get_column_correlation(dataframe, cols):
 
     print(output)
     
-    
-
-def normed_error(dataframe, column_name, L, p):
-    '''predict the L-p norm error between predicted values and dataframe values
-       Args:
-            dataframe: the input dataframe for comparison
-            column_name: the specific column for comparison
-            L: list of predicted values
-            p: L-p norm
-    '''
-    
-    s=dataframe.shape
-    if s[0]!=len(L): #input list and the dataframe should have the same length
-        raise ValueError("input size doesn't match")
-    sum=0
-    for i in range(s[0]):
-        sum=sum+abs(dataframe.iloc[i][column_name]-L[i])^p #iterate to get the total sum of error
-    
-    return sum^(1/p)
-
 
 
 def linear_regression(basketball):
