@@ -30,7 +30,6 @@ def get_column_correlation(dataframe, cols):
                 output=output+"The correlation between "+str(cols[i])+" and "+str(cols[j])+" is "+str(numpy.round(corr[0,1], 2))+".\n"
 
     print(output)
-
     
     
 
@@ -52,6 +51,8 @@ def normed_error(dataframe, column_name, L, p):
     
     return sum^(1/p)
 
+
+
 def linear_regression(basketball):
     '''
     Create and train a linear regression model to predict the "BARTHAG" attribute with the inputs "W","ADJOE", and "ADJDE". 
@@ -70,6 +71,7 @@ def linear_regression(basketball):
     lr.fit(train_X, train_y) # train the model
         
     return lr, train_X, train_y
+
 
 
 def march_madness(basketball):
@@ -105,14 +107,16 @@ def march_madness(basketball):
     eastWinner = east.simulate_regional_games()
     westWinner = west.simulate_regional_games()
     
-    print(f'Final Four Teams: {northWinner["TEAM"]}, {southWinner["TEAM"]}, {eastWinner["TEAM"]}, {westWinner["TEAM"]}')
+    print(f'Final Four Teams:\n\t North Winner: {northWinner["TEAM"]}\n\t South Winner: {southWinner["TEAM"]}\n\t East Winner: {eastWinner["TEAM"]}\n\t West Winner: {westWinner["TEAM"]}')
     
     # creates another basketball object with the four region winners
     finalFour = basketball_team(pd.concat([northWinner, southWinner, eastWinner, westWinner], axis=1).T)
     
     marchMadnessWinner = finalFour.play_final_four()
     
-    print(f'\n\nThe winner of March Madness is:\n-------------------\n{marchMadnessWinner}!!!\n-------------------')
+    print(f'\n\nThe Winner of March Madness is:\n-------------------\n{marchMadnessWinner}!!!\n-------------------')
+    
+    
     
     
 class basketball_team(pd.DataFrame):
@@ -196,3 +200,25 @@ class basketball_team(pd.DataFrame):
         winner = simulation.play_weighted_games(0, 1)
         
         return winner["TEAM"]
+    
+    
+    def add_index(self, lr, train_X):
+        '''
+        Adds a index for a basketball object to be sorted by. This turns a linear
+        regression prediction into a sortable and useful index between 0 and 2.
+        Args:
+            lr: a linear regression object from sklearn
+            train_X: the variables (columns) from a basketball
+                object which we want the linear regression model to use as features
+        '''
+        trainedIndex = lr.predict(train_X)
+        # creats array with newly created nonzero and positive index
+        newIndex = trainedIndex + abs(trainedIndex[-1])*2
+
+        # add array to team
+        self["newIndex"] = newIndex
+        # sort basketball by newIndex
+        self = self.sort_values(by = ["newIndex"], ascending=False)
+        
+        print('The new team rankings:\n\n',self.head())
+        
