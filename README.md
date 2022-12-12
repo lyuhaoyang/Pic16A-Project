@@ -32,3 +32,7 @@ References and acknowledgement: Prof Lee, UCLA 22Fall Pic16A Lec2 Lecture Notes.
                               
 Source of the dataset: https://www.kaggle.com/datasets/andrewsundberg/college-basketball-dataset
 
+Demo Video:
+https://user-images.githubusercontent.com/119776543/206939416-96a81be7-3e2f-4182-a6be-e319189994f6.mp4
+
+
